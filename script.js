@@ -1,49 +1,76 @@
 'use strict';
 
+let numberOfFilms;
 
-/* Задание на урок:
+function start() {
+  numberOfFilms = +prompt('How much films are you watch?', 1);
 
-1) Автоматизировать вопросы пользователю про фильмы при помощи цикла
-
-2) Сделать так, чтобы пользователь не мог оставить ответ в виде пустой строки,
-отменить ответ или ввести название фильма длинее, чем 50 символов. Если это происходит - 
-возвращаем пользователя к вопросам опять
-
-3) При помощи условий проверить  personalMovieDB.count, и если он меньше 10 - вывести сообщение
-"Просмотрено довольно мало фильмов", если от 10 до 30 - "Вы классический зритель", а если больше - 
-"Вы киноман". А если не подошло ни к одному варианту - "Произошла ошибка"
-
-4) Потренироваться и переписать цикл еще двумя способами*/
-
-const numberOfFilms = +prompt('How much films are you watch?', 1);
-
-
-if (personalMovieDB.count < 10) {
-  alert('Просмотрено довольно мало фильмов');
-} else if (personalMovieDB.count >= 10 && personalMovieDB.count <= 30) {
-  alert('Вы классический зритель');
-} else if (personalMovieDB.count > 30) {
-  alert('Вы киноман');
-} else {
-  alert('Произошла ошибка');
-}
-
-
-
-for (let i = 0; i < personalMovieDB.count; i++) {
-  const lastFilm = prompt('What was the last movie you watched?', '');
-  const ratingFilm = prompt('Rating of this movie?', '');
-
-  if (lastFilm != null && ratingFilm != null && lastFilm != '' && ratingFilm != '' && lastFilm.length < 50) {
-    personalMovieDB.movies[lastFilm] = ratingFilm;
-  } else {
-    i--;
+  while (numberOfFilms == '' || numberOfFilms == null || isNaN(numberOfFilms)) {
+    numberOfFilms = +prompt('How much films are you watch?', 1);
   }
-
-
 }
 
+start();
+
+const personalMovieDB = {
+  count: numberOfFilms,
+  movies: {},
+  actors: {},
+  genres: [],
+  private: false,
+}
+
+function rememberMyFilms() {
+  for (let i = 0; i < personalMovieDB.count; i++) {
+    const lastFilm = prompt('What was the last movie you watched?', '');
+    const ratingFilm = prompt('Rating of this movie?', '');
+
+    if (lastFilm !== null && ratingFilm !== null && lastFilm !== '' && ratingFilm !== '' && lastFilm.length < 50) {
+      personalMovieDB.movies[lastFilm] = ratingFilm;
+    } else {
+      i--;
+    }
+  }
+}
+
+rememberMyFilms();
 
 
-console.log(personalMovieDB);
+function detectPersonalLevel() {
+  if (personalMovieDB.count < 10) {
+    alert('Просмотрено довольно мало фильмов');
+  } else if (personalMovieDB.count >= 10 && personalMovieDB.count <= 30) {
+    alert('Вы классический зритель');
+  } else if (personalMovieDB.count > 30) {
+    alert('Вы киноман');
+  } else {
+    alert('Произошла ошибка');
+  }
+}
+
+detectPersonalLevel();
+
+function showMyDB(personalMovieDB) {
+  personalMovieDB.private === false ? console.log(personalMovieDB) : null;
+}
+
+showMyDB(personalMovieDB);
+
+
+function writeYourGenres() {
+  let i = 1;
+
+  while (i <= 3) {
+
+    const YourFavoriteGanre = prompt(`What is your favorite ganres ${i}?`, '');
+
+    if (YourFavoriteGanre !== null && YourFavoriteGanre !== '') {
+      personalMovieDB.genres[i - 1] = YourFavoriteGanre;
+    }
+
+    i++;
+  }
+}
+
+writeYourGenres();
 
